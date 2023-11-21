@@ -1,0 +1,35 @@
+name: Copy BACPAC between Subscriptions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  copy-bacpac:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/setup-az-cli@v1
+        with:
+          azcliversion: latest
+
+      - name: Authenticate and Copy BACPAC
+        run: |
+          source_storage_account="devtestacct"
+          source_container_name="devc"
+          source_blob_name="dev.bacpac"
+
+          destination_storage_account="uattestacct"
+          destination_container_name="restore"
+          destination_blob_name="dev21nov.bacpac"
+
+          # Use azcopy to copy the BACPAC file
+          azcopy copy "https://${source_storage_account}.blob.core.windows.net/${source_container_name}/${source_blob_name}" "https://${destination_storage_account}.blob.core.windows.net/${destination_container_name}/${destination_blob_name}"
+
+        env:
+          AZURE_STORAGE_CONNECTION_STRING_SRC: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING_SRC }}
+          AZURE_STORAGE_CONNECTION_STRING_DEST: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING_DEST }}
