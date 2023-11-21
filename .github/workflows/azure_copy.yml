@@ -21,13 +21,13 @@ jobs:
 
       - name: Authenticate and Copy BACPAC
         run: |
-          source_storage_account="devtestacct"
-          source_container_name="devc"
-          source_blob_name="dev.bacpac"
+          $source_storage_account="devtestacct"
+          $source_container_name="devc"
+          $source_blob_name="dev.bacpac"
 
-          destination_storage_account="uattestacct"
-          destination_container_name="restore"
-          destination_blob_name="dev21nov.bacpac"
+          $destination_storage_account="uattestacct"
+          $destination_container_name="restore"
+          $destination_blob_name="dev21nov.bacpac"
 
           # Use azcopy to copy the BACPAC file
           azcopy copy "https://${source_storage_account}.blob.core.windows.net/${source_container_name}/${source_blob_name}" "https://${destination_storage_account}.blob.core.windows.net/${destination_container_name}/${destination_blob_name}"
